@@ -79,7 +79,7 @@ public class Main16 {
         Experiment.MealyExperiment<String, String>
                 experiment = new Experiment.MealyExperiment<>(learner, eqOracle, this.inputAlphabet);
         this.learnedMealy = experiment.run();
-        Visualization.visualize(learnedMealy, this.inputAlphabet);
+        // Visualization.visualize(learnedMealy, this.inputAlphabet);
         return Objects.isNull(modelChecker.findCounterExample(learnedMealy, this.inputAlphabet, property));
     }
 }
