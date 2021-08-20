@@ -1,0 +1,75 @@
+name: Run
+
+on: [push]
+
+jobs:
+  run-0_14_0:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          java-package: jdk
+          architecture: x64
+          distribution: 'adopt'
+      - name: Install LTSMin
+        run: |
+          wget https://github.com/Meijuh/ltsmin/releases/download/v3.1.0/ltsmin-v3.1.0-linux.tgz
+          tar xvf ltsmin-v3.1.0-linux.tgz
+          sudo cp -r v3.1.0/* /usr
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2.1.6
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build with Maven
+        run: |
+          cd 0.14.0
+          mvn package
+
+      - name: Run
+        run: |
+          cd 0.14.0
+          java -jar target/deviation-LearnLib-0.14.0-vs-0.16.0-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+  run_0_16_0:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          java-package: jdk
+          architecture: x64
+          distribution: 'adopt'
+      - name: Install LTSMin
+        run: |
+          wget https://github.com/Meijuh/ltsmin/releases/download/v3.1.0/ltsmin-v3.1.0-linux.tgz
+          tar xvf ltsmin-v3.1.0-linux.tgz
+          sudo cp -r v3.1.0/* /usr
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2.1.6
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build with Maven
+        run: |
+          cd 0.16.0
+          mvn package
+
+      - name: Run
+        run: |
+          cd 0.16.0
+          java -jar target/deviation-LearnLib-0.14.0-vs-0.16.0-1.0-SNAPSHOT-jar-with-dependencies.jar
+
